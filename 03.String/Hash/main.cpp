@@ -81,7 +81,6 @@ int main() {
         }
     }
 
-    // [sz+1][sz] ==so that=> int ans[sz+2][sz+1];
     for (int i = sz; i >= 0; --i) {
         for (int j = i; j <= sz; ++j) {
             ans[i][j] += ans[i + 1][j] + ans[i][j - 1] - ans[i + 1][j - 1];
