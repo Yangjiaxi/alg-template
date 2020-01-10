@@ -10,12 +10,12 @@
 
 ## 02. 动态规划
 
-## 03. 字符串 `03.String`
+## 03. 字符串 (`03.String/`)
 
-- [x] 哈希 `Hash`
+- [x] 哈希 (`Hash/`)
 - [ ] 前缀数组(->KMP)
-- [x] 后缀数组 `SuffixArray`
-- [x] Manacher最长回文子串
+- [x] 后缀数组 (`SuffixArray/`)
+- [x] Manacher最长回文子串 (`Manacher/`)
 - [ ] 自动机
   - [ ] Trie
   - [ ] KMP
