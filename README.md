@@ -18,8 +18,8 @@
 - 自动机
   - [x] Trie树 (`Trie/`)
   - KMP
-    - [x] 原始KMP (`KMP/`)
-    - [ ] Z函数(扩展KMP)
+    - [x] KMP (`KMP/`)
+    - [x] Z函数/扩展KMP (`Z_EKMP/`)
   - [ ] AC自动机
   - [ ] 后缀自动机(SAM)
   - [ ] 广义SAM
