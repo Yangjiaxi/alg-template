@@ -13,12 +13,12 @@
 ## 03. 字符串 (`03.String/`)
 
 - [x] 哈希 (`Hash/`)
-- [ ] 前缀数组(->KMP)
 - [x] 后缀数组 (`SuffixArray/`)
 - [x] Manacher最长回文子串 (`Manacher/`)
-- [ ] 自动机
+- 自动机
   - [x] Trie树 (`Trie/`)
-  - [ ] KMP
+  - KMP
+    - [x] 原始KMP (`KMP/`)
     - [ ] Z函数(扩展KMP)
   - [ ] AC自动机
   - [ ] 后缀自动机(SAM)
