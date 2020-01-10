@@ -17,7 +17,7 @@
 - [x] 后缀数组 (`SuffixArray/`)
 - [x] Manacher最长回文子串 (`Manacher/`)
 - [ ] 自动机
-  - [ ] Trie
+  - [x] Trie树 (`Trie/`)
   - [ ] KMP
     - [ ] Z函数(扩展KMP)
   - [ ] AC自动机
