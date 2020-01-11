@@ -76,8 +76,8 @@ class AC {
             while (tmp != root) {
                 if (exist[tmp]) {
                     ++cnt;
-                    auto s = idx_str.at(tmp);
-                    int ls = s.size();
+                    auto s  = idx_str.at(tmp);
+                    int ls  = s.size();
                     auto it = pos.find(s);
                     if (it != pos.end())
                         it->second.push_back(i - ls + 1);
@@ -132,14 +132,11 @@ int main() {
     ac.build();
 
     auto [cnt, pos] = ac.query(text);
-
     cout << "Total: " << cnt << endl;
 
     int n = text.size();
-    
     for (int i = 0; i < n; ++i) cout << i << (i < 10 ? "  " : " ");
     cout << endl;
-
     for (auto c : text) cout << c << "  ";
     cout << endl;
 
