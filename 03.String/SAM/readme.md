@@ -120,7 +120,7 @@ SAM的构造是一种增量算法。
 20 | 
 21 |     while(v非空 且 Transfer(v, c) == old):
 22 |         Transfer(v, c) <- clone
-23 |         v <- v.link
+23 |         v <- link(v)
 ```
 
 解释：
