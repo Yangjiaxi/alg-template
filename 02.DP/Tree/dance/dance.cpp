@@ -59,7 +59,9 @@ int main() {
         }
     }
     cout << "Boss: " << root << endl;
+
     solve(root);
+
     cout << "Max happiness: " << max(f[root][1], f[root][0]);
     return 0;
 }
