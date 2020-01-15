@@ -19,7 +19,7 @@ void add_edge(int u, int v) {
     E[++cnt].next = head[u];
     E[cnt].to     = v;
     head[u]       = cnt;
-} // namespace Graph
+}
 
 int f[MAXN][2];
 
@@ -38,9 +38,11 @@ void solve(int u) {
 
 int main() {
     ifstream ifs("./dance.txt");
+
     int n; // 总人数
     ifs >> n;
-    // 快乐指数，0节点表示NULL，哨兵
+
+    // 快乐指数
     for (int i = 1; i <= n; ++i) ifs >> f[i][1];
     // 下属关系
 
@@ -61,7 +63,7 @@ int main() {
     cout << "Boss: " << root << endl;
 
     solve(root);
-
     cout << "Max happiness: " << max(f[root][1], f[root][0]);
+
     return 0;
 }
