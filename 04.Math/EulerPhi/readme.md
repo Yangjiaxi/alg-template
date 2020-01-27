@@ -36,3 +36,7 @@ $$
 - 「积性函数」 若$\text{gcd}(a, b) = 1$，有$\varphi(ab) = \varphi(a)\varphi(b)$
 - 一般有：$\varphi(ab) = \varphi(a)\varphi(b)\frac{d}{\varphi(d)}$，其中$d = \text{gcd}(a, b)$
 - 若$n$为奇数，则$\varphi(2n)=\varphi(n)$
+
+## 筛法求欧拉函数
+
+见`../Sieve`
