@@ -1,3 +1,5 @@
 _deps
 .vscode
 *.out
+.DS_Store
+ref/
