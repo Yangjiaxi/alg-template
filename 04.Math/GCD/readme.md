@@ -103,7 +103,7 @@ $$
 \begin{aligned}
 & \text{Given}: ax_1 + by_1 = \text{gcd}(a, b) \\
 & \text{Let}: bx_2+ (a \bmod b)y_2 = \text{gcd}(b, a \bmod b) \\ \\
-& \because \text{gcd}(a, b) \equiv gcd(b, a \bmod b) \\
+& \because \text{gcd}(a, b) \equiv \text{gcd}(b, a \bmod b) \\
 & \therefore ax_1 + by_1 = bx_2+ (a \bmod b)y_2 = \text{gcd}(a, b) \\
 & \because a \bmod b = a - \lfloor\frac{a}{b}\rfloor*b \\
 & \therefore ax_1 + by_1 \\
