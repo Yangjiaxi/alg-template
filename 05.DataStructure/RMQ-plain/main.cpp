@@ -38,14 +38,18 @@ int main() {
 
     RMQ_init(A);
 
+    cout << "Array D:" << endl;
     for (int i = 0; i < N; ++i) {
+        cout << "\t";
         for (int j = 1; (1 << j) <= N; ++j) printf("d[%d][%d]=%d\t", i, j, d[i][j]);
         cout << endl;
     }
 
     output_array(A, true);
 
+    cout << endl << "RMQ:" << endl;
     for (int L = 0; L < N; ++L) {
+        cout << "\t";
         for (int R = L + 1; R < N; ++R) printf("[%d,%d]=%d\t", L, R, RMQ(L, R));
         cout << endl;
     }
