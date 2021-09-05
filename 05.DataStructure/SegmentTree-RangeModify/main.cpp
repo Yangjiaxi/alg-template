@@ -87,8 +87,7 @@ struct SegmentTree {
             if (y1 <= M) {
                 update(left, L, M);
             }
-            if (y2 > M)
-                update(right, M + 1, R);
+            if (y2 > M) update(right, M + 1, R);
         }
         maintain(o, L, R);
     }
@@ -126,8 +125,7 @@ struct SegmentTree {
         this->v = v;
         this->y1 = L;
         this->y2 = R;
-        for (int i = L; i <= R; ++i)
-            a[i] += v;
+        for (int i = L; i <= R; ++i) a[i] += v;
 
         update(1, 1, n);
     }
@@ -136,8 +134,7 @@ struct SegmentTree {
 int main() {
     int N = 10;
     auto array = random_arr(N, 2434);
-    for (auto a : array)
-        cout << a << "\t";
+    for (auto a : array) cout << a << "\t";
     cout << endl;
 
     SegmentTree tree(N);

@@ -119,8 +119,7 @@ struct SegmentTree {
 int main() {
     int N = 10;
     auto array = random_arr(N, 2434);
-    for (auto a : array)
-        cout << a << "\t";
+    for (auto a : array) cout << a << "\t";
     cout << endl;
 
     SegmentTree tree(N);
