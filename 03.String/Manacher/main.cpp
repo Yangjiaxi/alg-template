@@ -14,11 +14,11 @@ const char ori[] = "abababc";
 
 int main() {
     int len = strlen(ori);
-    int n   = len * 2 + 1;
+    int n = len * 2 + 1;
 
     char str[n];
     for (int i = 0; i < len; ++i) {
-        str[i << 1]       = '#';
+        str[i << 1] = '#';
         str[(i << 1) + 1] = ori[i];
     }
     str[n - 1] = '#';
@@ -37,7 +37,7 @@ int main() {
         while (i - k >= 0 && i + k < n && str[i - k] == str[i + k]) {
             k++;
         }
-        d[i]  = k--;
+        d[i] = k--;
         max_r = max(max_r, d[i] / 2);
 
         // 每次都要维护最大边界

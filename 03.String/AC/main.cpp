@@ -4,17 +4,17 @@
 
 using namespace std;
 
-constexpr int MAXN      = 1010;
-constexpr int MAX_LEN   = 10;
+constexpr int MAXN = 1010;
+constexpr int MAX_LEN = 10;
 constexpr int MAX_STATE = MAXN * MAX_LEN;
-constexpr int CHAR_SET  = 26;
+constexpr int CHAR_SET = 26;
 
 class AC {
   public:
     AC() : idx_str() { init(); }
 
     void insert(const string &s) {
-        int n   = s.size();
+        int n = s.size();
         int now = root;
         for (int i = 0; i < n; ++i) {
             int c = into(s.at(i));
@@ -66,18 +66,18 @@ class AC {
 
     pair<int, unordered_map<string, vector<int>>> query(const string &s) {
         int cnt = 0;
-        int n   = s.size();
+        int n = s.size();
         int now = root;
         unordered_map<string, vector<int>> pos;
 
         for (int i = 0; i < n; ++i) {
-            now     = next[now][into(s.at(i))];
+            now = next[now][into(s.at(i))];
             int tmp = now;
             while (tmp != root) {
                 if (exist[tmp]) {
                     ++cnt;
-                    auto s  = idx_str.at(tmp);
-                    int ls  = s.size();
+                    auto s = idx_str.at(tmp);
+                    int ls = s.size();
                     auto it = pos.find(s);
                     if (it != pos.end())
                         it->second.push_back(i - ls + 1);
@@ -108,7 +108,7 @@ class AC {
     }
 
     void init() {
-        L    = 0;
+        L = 0;
         root = new_node();
     }
 
@@ -125,7 +125,7 @@ class AC {
 
 int main() {
     vector<string> dict = {"i", "he", "his", "she", "hers"};
-    const string text   = "ushersheishis";
+    const string text = "ushersheishis";
 
     AC ac;
     for (auto &s : dict) ac.insert(s);

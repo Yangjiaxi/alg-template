@@ -34,8 +34,8 @@ int sa[MAXN], rank[MAXN << 1], bk_rank[MAXN << 1], id[MAXN], cnt[MAXN], rx[MAXN]
 const string str = "aabaaaab";
 
 int main() {
-    int n  = str.size();
-    int m  = std::max(n, 300); // 基数排序值域
+    int n = str.size();
+    int m = std::max(n, 300); // 基数排序值域
     int rk = m;
 
     // 第一遍基数排序

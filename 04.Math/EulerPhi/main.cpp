@@ -5,7 +5,7 @@ using namespace std;
 
 int euler_phi(int n) {
     int ans = n;
-    int m   = sqrt(n);
+    int m = sqrt(n);
 
     for (int i = 2; i <= m; ++i) {
         if (n % i == 0) {

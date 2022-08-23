@@ -10,7 +10,7 @@ class Trie {
 
     void insert(const string &str) {
         int cur = 0;
-        int l   = str.size();
+        int l = str.size();
         for (int i = 0; i < l; ++i) {
             int tr = mapper(str.at(i));
             if (!next[cur][tr]) next[cur][tr] = ++state;
@@ -21,7 +21,7 @@ class Trie {
 
     bool check(const string &str, bool not_ck) {
         int cur = 0;
-        int l   = str.size();
+        int l = str.size();
         for (int i = 0; i < l; ++i) {
             int tr = mapper(str.at(i));
             if (!next[cur][tr]) return false;

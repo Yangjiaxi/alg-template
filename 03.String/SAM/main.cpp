@@ -45,14 +45,14 @@ class SuffixAutomaton {
     }
 
     Node *extend(char ch) {
-        int c   = into(ch);
+        int c = into(ch);
         Node *u = new_node(last->max + 1);
         Node *v = last;
 
         // last引起的后缀连接路径上没有出边c的节点v全都连向u
         while (v && !v->ch[c]) {
             v->ch[c] = u;
-            v        = v->link;
+            v = v->link;
         }
 
         if (!v) {
@@ -65,7 +65,7 @@ class SuffixAutomaton {
         } else {
             // case.2 q.max != p.max + 1
             Node *clone = new_node(v->max + 1);
-            Node *old   = v->ch[c];
+            Node *old = v->ch[c];
 
             // 节点拷贝
             std::copy(old->ch, old->ch + CHAR_SET, clone->ch);
@@ -76,7 +76,7 @@ class SuffixAutomaton {
             // 只要存在一条由c引起的后缀连接节点的转移，就重定向到clone
             while (v && v->ch[c] == old) {
                 v->ch[c] = clone;
-                v        = v->link;
+                v = v->link;
             }
         }
         // 都要更新last
@@ -106,12 +106,12 @@ class SuffixAutomaton {
 // 本质不同子串
 void cnt_substrs(SuffixAutomaton &sam, const string &s) {
     sam.init();
-    int ans   = 0;
-    int len   = 0;
+    int ans = 0;
+    int len = 0;
     auto calc = [](int a) { return a * (a + 1) / 2; };
     for (char c : s) {
-        Node *now    = sam.extend(c);
-        int now_max  = now->get_max();
+        Node *now = sam.extend(c);
+        int now_max = now->get_max();
         int link_max = now->get_min() - 1;
         ans += now_max - link_max;
         len += calc(now_max) - calc(link_max);
@@ -126,7 +126,7 @@ void minimal_str(SuffixAutomaton &sam, const string &s) {
     sam.init();
     for (char c : s + s) sam.extend(c);
 
-    int n     = s.size();
+    int n = s.size();
     Node *cur = sam.start;
 
     cout << "Min(`" << s << "`) = `";

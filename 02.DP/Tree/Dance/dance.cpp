@@ -17,8 +17,8 @@ struct Edge {
 
 void add_edge(int u, int v) {
     E[++cnt].next = head[u];
-    E[cnt].to     = v;
-    head[u]       = cnt;
+    E[cnt].to = v;
+    head[u] = cnt;
 }
 
 int f[MAXN][2];

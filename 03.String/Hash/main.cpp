@@ -25,9 +25,9 @@ const int HASH = 10007;
 struct HashMap {
   public:
     HashMap(int n) : size(0) {
-        f     = new int(n);
-        next  = new int(n);
-        head  = new int(HASH);
+        f = new int(n);
+        next = new int(n);
+        head = new int(HASH);
         state = new (unsigned long long)(n);
         memset(head, -1, sizeof(int) * HASH);
     }
@@ -37,14 +37,14 @@ struct HashMap {
         for (int i = head[hit]; i != -1; i = next[i]) {
             if (val == state[i]) {
                 int tmp = f[i];
-                f[i]    = id;
+                f[i] = id;
                 return tmp;
             }
         }
-        f[size]     = id;
+        f[size] = id;
         state[size] = val;
-        next[size]  = head[hit];
-        head[hit]   = size++;
+        next[size] = head[hit];
+        head[hit] = size++;
         return 0;
     }
 

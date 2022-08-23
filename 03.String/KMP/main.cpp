@@ -35,7 +35,7 @@ vector<int> kmp_pos(const string &pattern, const string &text) {
 
 int main() {
     const string pattern = "ababaca";
-    const string text    = "bacbababadababacambabacaddababacasdsd";
+    const string text = "bacbababadababacambabacaddababacasdsd";
 
     auto pos = kmp_pos(pattern, text);
 

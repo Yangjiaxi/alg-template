@@ -20,7 +20,7 @@ vector<int> ekmp_pre(const string &s) {
 }
 
 vector<int> ekmp(const string &pattern, const string &text) {
-    int m      = pattern.size();
+    int m = pattern.size();
     auto combz = ekmp_pre(pattern + text);
 
     vector<int> pos;
@@ -32,7 +32,7 @@ vector<int> ekmp(const string &pattern, const string &text) {
 
 int main() {
     const string pattern = "ababaca";
-    const string text    = "bacbababadababacambabacaddababacasdsd";
+    const string text = "bacbababadababacambabacaddababacasdsd";
 
     // auto zs = ekmp_pre("aaabaab");
     // for (auto &z : zs) cout << z << " ";
