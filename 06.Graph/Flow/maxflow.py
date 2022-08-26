@@ -1,4 +1,3 @@
-from copy import deepcopy
 from queue import Queue
 
 
@@ -6,23 +5,39 @@ class DirectedWeightedGraph:
     def __init__(self, n_nodes):  # start from 1
         self.n_nodes = n_nodes
 
-        self.edges = {u: [] for u in range(self.n_nodes + 1)}
+        self.edges = {u: [] for u in self.nodes()}
 
-        self.capacity = {}
-        self.residual = {}
+        self.ori_cap = {}
+        self.cap = {}
+
+        self.clean()
+
+    def nodes(self):
+        return list(range(1, self.n_nodes + 1))
+
+    def clean(self):
+        self.vis = {u: False for u in self.nodes()}
+        self.level = {u: -1 for u in self.nodes()}
+
+    def restore(self):
+        for uv, cap in self.ori_cap.items():
+            self.cap[uv] = cap
 
     def __getitem__(self, u):
         return self.edges[u]
 
-    def reset_residual(self):
-        self.residual = {}
-        for uv, cap in self.capacity.items():
-            self.residual[uv] = cap
+    def _add(self, u, v, c):  # (u, v) = c
+        if (u, v) not in self.ori_cap:
+            self.edges[u].append(v)
+            self.ori_cap[(u, v)] = 0
+            self.cap[(u, v)] = 0
 
-    def add(self, u, v, cap):  # (u, v) = w
-        self.edges[u].append(v)
-        self.capacity[(u, v)] = cap
-        self.residual[(u, v)] = cap
+        self.ori_cap[(u, v)] += c
+        self.cap[(u, v)] += c
+
+    def add(self, u, v, c):
+        self._add(u, v, c)
+        self._add(v, u, 0)
 
     def _name(self):
         return "DirectedWeightedGraph"
@@ -31,105 +46,120 @@ class DirectedWeightedGraph:
         s = f"{self._name()}:\n"
         for u, vs in self.edges.items():
             s += f"\t{u} => ["
-            s += ", ".join([f"{v}({self.residual[(u,v)]}|{self.capacity[(u,v)]})" for v in vs])
+            s += ", ".join([f"{v}({self.cap[(u,v)]}|{self.ori_cap[(u,v)]})" for v in vs])
             s += "]\n"
         return s
 
 
-def dfs_path(G: DirectedWeightedGraph, source, target):
-    path = []
-    vis = {u: False for u in range(G.n_nodes + 1)}
+class FordFulkerson:
+    def __init__(self, G: DirectedWeightedGraph):
+        self.G = G
+        self.vis = {u: False for u in self.G.nodes()}  # clean
 
-    def do_dfs(u):
+    def clean(self):
+        self.vis = {u: False for u in self.G.nodes()}
+
+    def dfs(self, u, target, u_in):
         if u == target:
-            return True
+            return u_in
 
-        for v in G[u]:
-            if not vis[v] and G.residual[(u, v)] > 0:
-                vis[v] = True
+        self.vis[u] = True
+        for v in self.G[u]:
+            if not self.vis[v] and self.G.cap[(u, v)] > 0:
+                forward_min_f = self.dfs(v, target, min(u_in, self.G.cap[(u, v)]))
+                if forward_min_f > 0:
+                    self.G.cap[(u, v)] -= forward_min_f
+                    self.G.cap[(v, u)] += forward_min_f  # reversed edge
+                    return forward_min_f
 
-                path.append(v)
-                if do_dfs(v):
-                    return True
-                path.pop()
+        return 0
 
-    vis[source] = True
-    do_dfs(source)
+    def max_flow(self, source, target):
+        self.G.restore()
 
-    if not path:
-        return False, None, None
-
-    path.insert(0, source)
-    min_flow = G.residual[(path[0], path[1])]
-    for u, v in zip(path, path[1:]):
-        min_flow = min(min_flow, G.residual[(u, v)])
-    return True, path, min_flow
-
-
-def naive_max_flow(G: DirectedWeightedGraph, source, target):
-    G.reset_residual()
-
-    while True:
-        found, path, min_flow = dfs_path(G, source, target)
-        if not found:
-            break
-
-        for u, v in zip(path, path[1:]):
-            G.residual[(u, v)] -= min_flow
-
-    flow = 0
-    for v in G[source]:
-        flow += G.capacity[(source, v)] - G.residual[(source, v)]
-
-    return flow
+        flow = 0
+        while f := self.dfs(source, target, 1e18):
+            flow += f
+            self.clean()
+        return flow
 
 
-def ford_fulkerson(G: DirectedWeightedGraph, source, target):
-    RG = deepcopy(G)
-    RG.reset_residual()
+class Dinic:
+    def __init__(self, G: DirectedWeightedGraph):
+        self.G = G
+        self.level = {u: -1 for u in self.G.nodes()}
+        self.start = {u: 0 for u in self.G.nodes()}
 
-    while True:
-        found, path, min_flow = dfs_path(RG, source, target)
-        if not found:
-            break
+    def clean(self):
+        self.level = {u: -1 for u in self.G.nodes()}
+        self.start = {u: 0 for u in self.G.nodes()}
 
-        for u, v in zip(path, path[1:]):
-            RG.residual[(u, v)] -= min_flow
-            if (v, u) not in RG.residual:
-                RG.add(v, u, min_flow)
-            else:
-                RG.residual[(v, u)] += min_flow
+    def bfs_init(self, source, target):
+        self.clean()
+        self.level[source] = 0
 
-    flow = 0
-    for v in RG[source]:  # Original Graph
-        flow += RG.capacity[(source, v)] - RG.residual[(source, v)]
+        Q = Queue()
+        Q.put(source)
+        while not Q.empty():
+            u = Q.get()
+            for v in self.G[u]:
+                if self.G.cap[(u, v)] > 0 and self.level[v] < 0:
+                    self.level[v] = self.level[u] + 1
+                    Q.put(v)
 
-    return flow
+        return self.level[target] >= 0
+
+    def dfs(self, u, target, u_in):
+        if u == target:
+            return u_in
+
+        while self.start[u] < len(self.G[u]):
+            v = self.G[u][self.start[u]]  # get `self.start[u]`-th descendant
+            if self.G.cap[(u, v)] > 0 and self.level[u] < self.level[v]:
+                forward_f = self.dfs(v, target, min(u_in, self.G.cap[(u, v)]))
+                if forward_f > 0:
+                    self.G.cap[(u, v)] -= forward_f
+                    self.G.cap[(v, u)] += forward_f
+                    return forward_f
+            self.start[u] += 1
+            # for node `u`, its descendants from `0` to `self.start[u]-1` are all exhausted
+            # and its descendant with index `self.start[u]` is next to be discovered
+
+        return 0
+
+    def max_flow(self, source, target):
+        self.G.restore()
+
+        flow = 0
+        while self.bfs_init(source, target):
+            while (blocking_f := self.dfs(source, target, 1e18)) > 0:
+                flow += blocking_f
+        return flow
 
 
 if __name__ == "__main__":
-    # G = DirectedWeightedGraph(5)
-    # source, target = 0, 5
+    # GG = DirectedWeightedGraph(6)
+    # source, target = 1, 6
     # # book = [(0, 1, 4), (0, 2, 2), (1, 2, 1), (1, 3, 2), (1, 4, 4), (2, 4, 2), (3, 5, 3), (4, 5, 3)]
     # book = [(0, 1, 5), (0, 2, 2), (1, 2, 2), (1, 3, 2), (1, 4, 4), (2, 4, 2), (3, 5, 3), (4, 5, 3)]
 
     # for u, v, cap in book:
-    #     G.add(u, v, cap)
+    #     GG.add(u + 1, v + 1, cap)
 
-    # print(G)
-
-    # print("naive_max_flow:", naive_max_flow(G, source, target))
-    # print("ford_fulkerson:", ford_fulkerson(G, source, target))
+    # print(GG)
+    # # print("ford_fulkerson:", FordFulkerson(GG).max_flow(source, target))
+    # print("dinic:", Dinic(GG).max_flow(source, target))
 
     from pathlib import Path
 
     with Path("./P3376_7.in").open("r") as f:
         num_nodes, num_edges, source, target = [int(e) for e in f.readline().strip().split(" ")]
-        G = DirectedWeightedGraph(num_nodes)
+        GG = DirectedWeightedGraph(num_nodes)
 
         for _ in range(num_edges):
             u, v, cap = [int(e) for e in f.readline().strip().split(" ")]
-            G.add(u, v, cap)
-        print("naive_max_flow:", naive_max_flow(G, source, target))
-        print("ford_fulkerson:", ford_fulkerson(G, source, target))
+            GG.add(u, v, cap)
+
+        print("ford_fulkerson:", FordFulkerson(GG).max_flow(source, target))
+        print("dinic:", Dinic(GG).max_flow(source, target))
 
